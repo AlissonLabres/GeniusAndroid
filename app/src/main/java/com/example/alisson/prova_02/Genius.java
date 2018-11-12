@@ -118,13 +118,13 @@ public class Genius extends AppCompatActivity {
         listFase = Arrays.asList();
 
 //        List<Integer> listTeste = Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1);
-        switch (fase) {
 //            case 1: listFase = listTeste;
 //            case 2: listFase = listTeste;
 //            case 3: listFase = listTeste;
 //            case 4: listFase = listTeste;
 //            case 5: listFase = listTeste;
 
+        switch (fase) {
             case 1: listFase = Arrays.asList(1, 2, 3, 4, 1, 2, 3, 4); break;
             case 2: listFase = Arrays.asList(1, 3, 1, 3, 1, 3, 1, 3); break;
             case 3: listFase = Arrays.asList(4, 1, 1, 2, 3, 3, 3, 1); break;
@@ -260,8 +260,8 @@ public class Genius extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 irParaSalvarRanking(
-                    "Parabéns, você concluiu o Jogo" +
-                    "\nPor favor informe seu nome para adicionarmos ao RankingModel :)",
+                    "Parabéns, você concluiu o Jogo :)" +
+                    "\n\n\nPor favor informe seu nome para adicionarmos ao Ranking sua pontuação",
                     true
                 );
             }
@@ -318,7 +318,7 @@ public class Genius extends AppCompatActivity {
 
                 irParaSalvarRanking(
                     "Infelizmente você perdeu o Jogo, mas poderá tentar novamente quando quiser :)" +
-                    "\n\n\nPor favor informe seu nome para adicionarmos ao RankingModel sua pontuação", false
+                    "\n\n\nPor favor informe seu nome para adicionarmos ao Ranking sua pontuação", false
                 );
             }
         };
@@ -329,7 +329,7 @@ public class Genius extends AppCompatActivity {
 
         Integer pontosGanhos = calcularPontosJogo();
 
-        if(jogoConcluido) pontosGanhos += 15;
+        if(jogoConcluido) pontosGanhos += 16;
         nextView.putExtra("Pontos", pontosGanhos.toString());
         nextView.putExtra(
                 "Texto",
@@ -345,7 +345,7 @@ public class Genius extends AppCompatActivity {
         Integer pontosVida = VIDA * obterVida();
         Integer pontosFase = FASE * (obterFase() - 1);
 
-        return 1 + pontosVida + pontosFase;
+        return pontosVida + pontosFase;
     }
 
     private Integer obterVida() {

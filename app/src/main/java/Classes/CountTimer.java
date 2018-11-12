@@ -31,9 +31,9 @@ public class CountTimer  extends CountDownTimer {
 
     @Override
     public void onTick(long millisUntilFinished) {
-        if(positionFase == 4) { positionFase = 0; }
+        Integer positionButton = listFase.get(positionFase);
 
-        ButtonColor buttonColor = listButtonColor.get(listFase.get(positionFase) - 1);
+        ButtonColor buttonColor = listButtonColor.get(positionButton - 1);
         buttonColor.getButton().setBackgroundColor(buttonColor.getColor());
 
         positionFase++;
