@@ -114,8 +114,7 @@ public class Genius extends AppCompatActivity {
     }
 
     private void iniciarFase(Integer fase) {
-        qntdCliquesPorFase = 0;
-        listFase = Arrays.asList();
+        zerarContadoresEDesabilitarButtons();
 
 //        List<Integer> listTeste = Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1);
 //            case 1: listFase = listTeste;
@@ -225,6 +224,8 @@ public class Genius extends AppCompatActivity {
     }
 
     private void faseConcluida() {
+        this.desativarCliques();
+
         if(obterFase() == 5) {
             AlertDialog.Builder alerta = new AlertDialog.Builder(Genius.this);
             alerta
@@ -247,8 +248,7 @@ public class Genius extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 alterarFase(obterFase() + 1);
-                qntdCliquesPorFase = 0;
-                listButtonClicado = new ArrayList<>();
+                zerarContadoresEDesabilitarButtons();
 
                 btnStart.setVisibility(View.VISIBLE);
             }
@@ -278,6 +278,7 @@ public class Genius extends AppCompatActivity {
     }
 
     private void diminuirVidaDoUsuario() {
+        this.desativarCliques();
         alterarVida(obterVida() - 1);
 
         if(obterVida() > 0) {
@@ -301,8 +302,7 @@ public class Genius extends AppCompatActivity {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                qntdCliquesPorFase = 0;
-                listButtonClicado = new ArrayList<>();
+                zerarContadoresEDesabilitarButtons();
 
                 btnStart.setVisibility(View.VISIBLE);
             }
@@ -313,8 +313,6 @@ public class Genius extends AppCompatActivity {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                qntdCliquesPorFase = 0;
-                listButtonClicado = new ArrayList<>();
 
                 irParaSalvarRanking(
                     "Infelizmente você perdeu o Jogo, mas poderá tentar novamente quando quiser :)" +
@@ -322,6 +320,12 @@ public class Genius extends AppCompatActivity {
                 );
             }
         };
+    }
+
+    private void zerarContadoresEDesabilitarButtons() {
+        this.desativarCliques();
+        qntdCliquesPorFase = 0;
+        listButtonClicado = new ArrayList<>();
     }
 
     private void irParaSalvarRanking(String textParaApresentacao, boolean jogoConcluido) {
