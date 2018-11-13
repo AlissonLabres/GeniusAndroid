@@ -30,10 +30,7 @@ public class Sobre extends AppCompatActivity {
 
         toolbar.setOnClickListener(mudarPagina(Genius.class));
 
-        btnAluno = (Button) findViewById(R.id.btnAluno);
         btnRanking = (Button) findViewById(R.id.btnRanking);
-
-        btnAluno.setOnClickListener(mudarPagina(Sobre.class));
         btnRanking.setOnClickListener(mudarPagina(Ranking.class));
     }
 

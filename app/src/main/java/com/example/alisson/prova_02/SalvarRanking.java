@@ -1,6 +1,8 @@
 package com.example.alisson.prova_02;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -57,26 +59,38 @@ public class SalvarRanking extends AppCompatActivity {
 
             if(obterPontos != null) {
                 pontos = Integer.parseInt(obterPontos);
-                tvPontuacao.setText("Sua pontução foi de " + pontos.toString() + " pontos");
-            }
-            else { pontos = 0; tvPontuacao.setText("Erro ao obter pontos do Jogo"); }
+                tvPontuacao.setText("\n\n\nSua pontução foi de " + pontos.toString() + " pontos\n\n\n");
+            } else { abrirAlertaDeErro(); }
 
             if(obterTexto != null ) { tvTexto.setText(obterTexto); }
-            else { tvTexto.setText("Erro ao iniciar tela."); }
+            else { abrirAlertaDeErro(); }
         } else {
-            pontos = 0;
-
-            String MESSAGEERRO = "Erro ao iniciar tela.";
-            tvTexto.setText(MESSAGEERRO);
-            tvPontuacao.setText(MESSAGEERRO);
+            abrirAlertaDeErro();
         }
+    }
+
+    private AlertDialog abrirAlertaDeErro() {
+        AlertDialog.Builder alerta = new AlertDialog.Builder(getApplicationContext());
+        return alerta
+            .setTitle("Erro ao carregar a página")
+            .setMessage("erro ao iniciar sua tela. \n\n\nVocê será redirecionado para o Inicio")
+            .setNeutralButton("OK", retornarAoInicioQuandoErroDeDados())
+            .show();
+    }
+
+    private DialogInterface.OnClickListener retornarAoInicioQuandoErroDeDados() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent nextView = new Intent(getApplicationContext(), Inicio.class);
+                startActivity(nextView);
+            }
+        };
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(rankingDataSource != null) {
-            rankingDataSource.close();
-        }
+        if(rankingDataSource != null) { rankingDataSource.close(); }
     }
 }

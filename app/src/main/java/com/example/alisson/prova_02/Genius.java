@@ -75,8 +75,6 @@ public class Genius extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        toolbar.setOnClickListener(mudarPagina(Genius.class));
-
         btnAluno = (Button) findViewById(R.id.btnAluno);
         btnRanking = (Button) findViewById(R.id.btnRanking);
 
@@ -234,25 +232,30 @@ public class Genius extends AppCompatActivity {
                 .setNeutralButton("OK", jogoConcluido())
                 .show();
         } else {
-            AlertDialog.Builder alerta = new AlertDialog.Builder(Genius.this);
-            alerta
-                .setTitle("Fase " + obterFase() + " concluida")
-                .setMessage("Você acertou a sequência da fase " + obterFase() + ".\n\n\nClique em OK e START para iniciar a próxima fase.")
-                .setNeutralButton("OK", proximaFase())
-                .show();
+            final String MENSAGEMFASECONCLUIDA = "Você acertou a sequência da fase " + obterFase() + ".\n\n\nClique em OK e START para iniciar a próxima fase.";
+
+            if(obterFase() == 1) {
+                AlertDialog.Builder alerta = new AlertDialog.Builder(Genius.this);
+                alerta
+                    .setTitle("Fase " + obterFase() + " concluida")
+                    .setMessage(MENSAGEMFASECONCLUIDA)
+                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) { proximaFase(); }
+                    })
+                    .show();
+            } else {
+                Toast.makeText(getApplicationContext(), MENSAGEMFASECONCLUIDA, Toast.LENGTH_LONG).show();
+                proximaFase();
+            }
         }
     }
 
-    private DialogInterface.OnClickListener proximaFase() {
-        return new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                alterarFase(obterFase() + 1);
-                zerarContadoresEDesabilitarButtons();
+    private void proximaFase() {
+        alterarFase(obterFase() + 1);
+        zerarContadoresEDesabilitarButtons();
 
-                btnStart.setVisibility(View.VISIBLE);
-            }
-        };
+        btnStart.setVisibility(View.VISIBLE);
     }
 
     private DialogInterface.OnClickListener jogoConcluido() {
@@ -285,7 +288,7 @@ public class Genius extends AppCompatActivity {
             AlertDialog.Builder alerta = new AlertDialog.Builder(Genius.this);
             alerta
                 .setTitle("Errou")
-                .setMessage("você infelizmente erro a sequência do Jogo. \nClique em START para tentar novamente!")
+                .setMessage("você infelizmente erro a sequência do Jogo. \n\n\nClique em START para tentar novamente!")
                 .setNeutralButton("OK", vidaPerdida())
                 .show();
         } else {

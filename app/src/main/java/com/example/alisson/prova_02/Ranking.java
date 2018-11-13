@@ -19,7 +19,6 @@ import Database.RankingModel;
 public class Ranking extends AppCompatActivity {
 
     protected ListView lvRanking;
-    protected Button btnRanking;
     protected Button btnAluno;
 
     private RankingDataSource rankingDataSource;
@@ -44,10 +43,7 @@ public class Ranking extends AppCompatActivity {
         toolbar.setOnClickListener(mudarPagina(Genius.class));
 
         btnAluno = (Button) findViewById(R.id.btnAluno);
-        btnRanking = (Button) findViewById(R.id.btnRanking);
-
         btnAluno.setOnClickListener(mudarPagina(Sobre.class));
-        btnRanking.setOnClickListener(mudarPagina(Ranking.class));
     }
 
     private View.OnClickListener mudarPagina(final Class novaClass) {
