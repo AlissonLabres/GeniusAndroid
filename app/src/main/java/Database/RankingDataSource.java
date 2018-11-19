@@ -74,10 +74,32 @@ public class RankingDataSource {
         );
     }
 
-    public void deletarEstudantePorNomeEPontos(String nome, String pontos) {
-        database.execSQL(
-            "DELETE FROM " + DatabaseHelper.TABELA_RANKING + " WHERE nome = '" + nome + "' OR matricula = '" + pontos + "'"
+    public RankingModel obterRankingPorId(long id) {
+        List<RankingModel> rankingModels = new ArrayList<>();
+        Cursor cursor = database.query(
+                DatabaseHelper.TABELA_RANKING,
+                allColumns,
+                null,
+                null,
+                null,
+                null,
+                null
         );
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            RankingModel rankingModel = rankingApartirDeCursor(cursor);
+            rankingModels.add(rankingModel);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        RankingModel ranking = new RankingModel();
+        for (RankingModel r: rankingModels) {
+            if(r.getId() == id) ranking = r;
+        }
+
+        return ranking;
     }
 
     public List<RankingModel> obterTodosRankings() {

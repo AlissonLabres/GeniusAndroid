@@ -232,13 +232,13 @@ public class Genius extends AppCompatActivity {
                 .setNeutralButton("OK", jogoConcluido())
                 .show();
         } else {
-            final String MENSAGEMFASECONCLUIDA = "Você acertou a sequência da fase " + obterFase() + ".\n\n\nClique em OK e START para iniciar a próxima fase.";
+            final String MENSAGEMFASECONCLUIDA = "Você acertou a sequência da fase " + obterFase() + ".";
 
             if(obterFase() == 1) {
                 AlertDialog.Builder alerta = new AlertDialog.Builder(Genius.this);
                 alerta
                     .setTitle("Fase " + obterFase() + " concluida")
-                    .setMessage(MENSAGEMFASECONCLUIDA)
+                    .setMessage(MENSAGEMFASECONCLUIDA + "\n\n\nClique em OK e START para iniciar a próxima fase.")
                     .setNeutralButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) { proximaFase(); }

@@ -1,10 +1,14 @@
 package com.example.alisson.prova_02;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -12,6 +16,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Database.RankingDataSource;
 import Database.RankingModel;
@@ -50,7 +56,6 @@ public class Ranking extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Clicado", Toast.LENGTH_SHORT);
                 Intent nextView = new Intent(getApplicationContext(), novaClass);
                 startActivity(nextView);
             }
@@ -58,10 +63,30 @@ public class Ranking extends AppCompatActivity {
     }
 
     private void criarListView() {
+        obterListaDeRanking();
+        lvRanking.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                long idUsuario = Long.parseLong(lvRanking.getAdapter().getItem(position).toString().substring(16, 17));
+
+                AlertDialog.Builder alerta = new AlertDialog.Builder(parent.getContext());
+                alerta
+                    .setTitle("Excluir usuário")
+                    .setMessage("Você tem certeza que deseja excluir o usuário?")
+                    .setNeutralButton("Sim", apagarItem(idUsuario))
+                    .setNegativeButton("Não", cancelarExclusao())
+                    .show();
+
+                return true;
+            }
+        });
+    }
+
+    private void obterListaDeRanking() {
         List<String> arrayAdapterRanking = new ArrayList<>();
         for (RankingModel ranking : rankingDataSource.obterTodosRankings()) {
             arrayAdapterRanking.add(
-                    "Nome: " + ranking.getNome().toString() + "\nPonto: " + ranking.getPonto().toString()
+                "ID do Usuário - " + ranking.getId() + "\n\nNome - " + ranking.getNome().toString() + "\n\nPonto - " + ranking.getPonto().toString() + "\n"
             );
         }
 
@@ -73,5 +98,25 @@ public class Ranking extends AppCompatActivity {
         );
 
         lvRanking.setAdapter(adapter);
+    }
+
+    private Dialog.OnClickListener cancelarExclusao() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        };
+    }
+
+    private Dialog.OnClickListener apagarItem(final long idItem) {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                RankingModel ranking = rankingDataSource.obterRankingPorId(idItem);
+                rankingDataSource.deletarRankingPorId(ranking);
+
+                obterListaDeRanking();
+            }
+        };
     }
 }
